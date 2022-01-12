@@ -14,12 +14,12 @@ export const Header = styled.View`
   align-items: center;
 
   position: absolute;
-  margin-top: ${Platform.OS === 'ios' ? getStatusBarHeight() : 0 + 18}px;
+  padding-top: ${getStatusBarHeight() + 18}px;
   margin-left: 24px;
 `;
 
 export const CarImages = styled.View`
-  margin-top: ${Platform.OS === 'ios' ? getStatusBarHeight() : 0 + 32}px;
+  padding-top: ${getStatusBarHeight() + 32}px;
 `;
 
 export const Content = styled.ScrollView.attrs({
@@ -39,9 +39,7 @@ export const Details = styled.View`
   margin-top: 38px;
 `;
 
-export const Description = styled.View`
-
-`;
+export const Description = styled.View``;
 
 export const Brand = styled.Text`
   font-family: ${({ theme }) => theme.fonts.secondary_500};
@@ -56,9 +54,7 @@ export const Name = styled.Text`
   font-size: ${RFValue(25)}px;
 `;
 
-export const Rent = styled.View`
-
-`;
+export const Rent = styled.View``;
 
 export const Period = styled.Text`
   font-family: ${({ theme }) => theme.fonts.secondary_500};
