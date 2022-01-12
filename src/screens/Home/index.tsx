@@ -10,9 +10,19 @@ import {
 import Logo from '../../assets/logo.svg';
 
 import { RFValue } from 'react-native-responsive-fontsize';
+import { CarCard } from '../../components/CarCard';
 
 export function Home() {
   const [totalCars, setTotalCars] = useState(0);
+  const carData = {
+    brand: 'Audi',
+    name: 'RS 5 coupé',
+    rent: {
+      period: 'Ao dia',
+      price: 120
+    },
+    thumbnail: 'https://freepngimg.com/thumb/audi/35227-5-audi-rs5-red.png'
+  }
   return (
     <Container>
       <StatusBar 
@@ -31,6 +41,9 @@ export function Home() {
           </TotalCars>
         </HeaderContent>
       </Header>
+
+      <CarCard data={carData} />
+      <CarCard data={carData} />
     </Container>
   )
 }
