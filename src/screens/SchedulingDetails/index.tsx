@@ -11,9 +11,18 @@ import {
   Rent,
   Period,
   Price,
-  About,
   Acessories,
   Footer,
+  RentalPeriod,
+  CalendarIcon,
+  DateInfo,
+  DateTitle,
+  DateValue,
+  RentalPrice,
+  RentalPriceLabel,
+  RentalPriceDetails,
+  RentalPriceQuota,
+  RentalPriceTotal,
 } from './styles'
 
 import { BackButton } from '../../components/BackButton'
@@ -28,7 +37,12 @@ import gearboxSvg from '../../assets/gearbox.svg';
 import peopleSvg from '../../assets/people.svg';
 import { Button } from '../../components/Button'
 
-export function CarDetails() {
+import { Feather } from '@expo/vector-icons';
+import { RFValue } from 'react-native-responsive-fontsize'
+import { useTheme } from 'styled-components'
+
+export function SchedulingDetails() {
+  const theme = useTheme();
   return (
     <Container>
       <Header>
@@ -84,14 +98,41 @@ export function CarDetails() {
           />
         </Acessories>
 
-        <About>
-          Este é um automóvel desportivo. Surgiu do lendário touro que é seu pai
-        </About>
+        <RentalPeriod>
+          <CalendarIcon>
+            <Feather 
+              name='calendar'
+              size={RFValue(24)}
+              color={theme.colors.shape}
+            />
+          </CalendarIcon>
+          <DateInfo>
+            <DateTitle>DE</DateTitle>
+            <DateValue>12/01/2022</DateValue>
+          </DateInfo>
+          <Feather 
+            name='chevron-right'
+            size={RFValue(10)}
+            color={theme.colors.text}
+          />
+          <DateInfo>
+            <DateTitle>DE</DateTitle>
+            <DateValue>12/01/2022</DateValue>
+          </DateInfo>
+        </RentalPeriod>
 
+        <RentalPrice>
+          <RentalPriceLabel>TOTAL</RentalPriceLabel>
+          <RentalPriceDetails>
+            <RentalPriceQuota>R$ 120 x3 diárias</RentalPriceQuota>
+            <RentalPriceTotal>R$ 360</RentalPriceTotal>
+          </RentalPriceDetails>
+        </RentalPrice>
       </Content>
       <Footer>
         <Button 
-          title='Escolher período do aluguel'
+          title='Alugar agora'
+          color={theme.colors.success}
           onPress={() => {}}
         />
       </Footer>
