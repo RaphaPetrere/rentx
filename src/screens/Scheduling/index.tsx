@@ -13,6 +13,7 @@ import {
 
 import { BackButton } from '../../components/BackButton'
 import { Button } from '../../components/Button';
+import { Calendar } from '../../components/Calendar';
 
 import ArrowSvg from '../../assets/arrow.svg';
 
@@ -53,7 +54,7 @@ export function Scheduling() {
       </Header>
 
       <Content showsVerticalScrollIndicator={false}>
-
+        <Calendar />
       </Content>
 
       <Footer>
