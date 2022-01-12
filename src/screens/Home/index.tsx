@@ -5,6 +5,7 @@ import {
   Header,
   HeaderContent,
   TotalCars,
+  CarList,
 } from './styles';
 
 import Logo from '../../assets/logo.svg';
@@ -42,8 +43,11 @@ export function Home() {
         </HeaderContent>
       </Header>
 
-      <CarCard data={carData} />
-      <CarCard data={carData} />
+      <CarList
+        data={[1,2,3,4,5,6,7,8]}
+        renderItem={({ item }) => <CarCard data={carData}/>}
+        showsVerticalScrollIndicator={false}
+      />
     </Container>
   )
 }

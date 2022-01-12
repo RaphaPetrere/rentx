@@ -27,3 +27,7 @@ export const TotalCars = styled.Text`
   font-size: ${RFValue(15)}px;
   color: ${({ theme }) => theme.colors.text};
 `;
+
+export const CarList = styled.FlatList`
+  padding: 24px;
+`;
