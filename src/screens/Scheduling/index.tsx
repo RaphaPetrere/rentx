@@ -17,11 +17,14 @@ import { Calendar, DayProps, generateInterval, MarkedDateProps } from '../../com
 
 import ArrowSvg from '../../assets/arrow.svg';
 
+import { CarDTO } from '../../dtos/CarDTO';
+
 import { useTheme } from 'styled-components'
 import { StatusBar } from 'react-native';
 
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { CarDTO } from '../../dtos/CarDTO';
+
+import { format, addDays } from 'date-fns';
 
 type NavigationProps = {
   navigate: (screen:string, carObject: {car: CarDTO}) => void;
@@ -31,13 +34,24 @@ interface Params {
   car: CarDTO;
 }
 
+interface IRentalPeriod {
+  start: number;
+  startFormatted: string;
+  end?: number;
+  endFormatted?: string;
+}
+
 export function Scheduling() {
   const navigation = useNavigation<NavigationProps>();
+
   const route = useRoute();
   const { car } = route.params as Params; 
+
   const theme = useTheme();
+
   const [lastSelectedDate, setLastSelectedDate] = useState<DayProps>({} as DayProps);
   const [markedDates, setMarkedDates] = useState<MarkedDateProps>({} as MarkedDateProps);
+  const [rentalPeriod, setRentalPeriod] = useState<IRentalPeriod>({} as IRentalPeriod);
 
   function handleChangeDate(date: DayProps) {
     let start = !lastSelectedDate.timestamp ? date : lastSelectedDate;
@@ -53,6 +67,23 @@ export function Scheduling() {
     setLastSelectedDate(date);
     const interval = generateInterval(start, end);
     setMarkedDates(interval);
+
+    if(lastSelectedDate.timestamp)
+    {
+      setRentalPeriod({
+        start: start.timestamp,
+        startFormatted: format(addDays(new Date(start.timestamp), 1), 'dd/MM/yyyy'),
+        end: end.timestamp,
+        endFormatted: format(addDays(new Date(end.timestamp), 1), 'dd/MM/yyyy'),
+      })
+    }
+    else
+    {
+      setRentalPeriod({
+        start: start.timestamp,
+        startFormatted: format(addDays(new Date(start.timestamp), 1), 'dd/MM/yyyy'),
+      })
+    }
   }
   return (
     <Container>
@@ -75,12 +106,16 @@ export function Scheduling() {
         <RentalPeriod>
           <DateInfo>
             <DateTitle>DE</DateTitle>
-            <DateValue selected={false}>12 de janeiro de 2022</DateValue>
+            <DateValue selected={!!rentalPeriod.startFormatted}>
+              {rentalPeriod.startFormatted ? rentalPeriod.startFormatted : ''}
+            </DateValue>
           </DateInfo>
           <ArrowSvg />
           <DateInfo>
             <DateTitle>ATÉ</DateTitle>
-            <DateValue selected={false}>12 de janeiro de 2022</DateValue>
+            <DateValue selected={!!rentalPeriod.endFormatted}>
+              {rentalPeriod.endFormatted ? rentalPeriod.endFormatted : ''}
+            </DateValue>
           </DateInfo>
         </RentalPeriod>
       </Header>
