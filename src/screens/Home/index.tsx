@@ -6,6 +6,7 @@ import {
   HeaderContent,
   TotalCars,
   CarList,
+  MyCarsButton,
 } from './styles';
 
 import Logo from '../../assets/logo.svg';
@@ -18,8 +19,12 @@ import { CarDTO } from '../../dtos/CarDTO';
 import { useNavigation } from '@react-navigation/native';
 import { Load } from '../../components/Load';
 
+import { Ionicons } from '@expo/vector-icons';
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { useTheme } from 'styled-components';
+
 type NavigationProps = {
-  navigate: (screen:string, carObject: {car: CarDTO}) => void;
+  navigate: (screen:string, carObject?: {car: CarDTO}) => void;
 }
 
 export function Home() {
@@ -27,6 +32,8 @@ export function Home() {
   const [loading, setLoading] = useState(true);
 
   const navigation = useNavigation<NavigationProps>();
+
+  const theme = useTheme();
 
   function handleCarDetail(car: CarDTO) {
     navigation.navigate('CarDetails', { car })
@@ -77,6 +84,18 @@ export function Home() {
           showsVerticalScrollIndicator={false}
         />
       }
+
+      <GestureHandlerRootView>
+        <MyCarsButton
+          onPress={() => navigation.navigate('MyCars')}
+        >
+          <Ionicons 
+            name='ios-car-sport' 
+            size={32}
+            color={theme.colors.shape}
+          />
+        </MyCarsButton>
+      </GestureHandlerRootView>
     </Container>
   )
 }
