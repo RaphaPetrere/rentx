@@ -7,7 +7,7 @@ import {
   Footer,
   ButtonContainer,
 } from './styles'
-import { useWindowDimensions } from 'react-native';
+import { StatusBar, useWindowDimensions } from 'react-native';
 
 import LogoSvg from '../../assets/logo_background_gray.svg';
 import DoneSvg from '../../assets/done.svg';
@@ -18,6 +18,11 @@ export function SchedulingComplete() {
   const theme = useTheme();
   return (
     <Container>
+      <StatusBar 
+        barStyle={'light-content'}
+        backgroundColor={'transparent'}
+        translucent
+      />
       <LogoSvg width={useWindowDimensions().width} />
 
       <Content>
@@ -34,7 +39,7 @@ export function SchedulingComplete() {
       <Footer>
         <ButtonContainer>
           <Button 
-            title='Ok'
+            title='OK'
             onPress={() => {}}
             color={theme.colors.shape_dark}
           />
