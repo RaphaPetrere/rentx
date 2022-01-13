@@ -50,13 +50,15 @@ type NavigationProps = {
 
 interface Params {
   car: CarDTO;
+  dates: string[],
 }
 
 export function SchedulingDetails() {
   const theme = useTheme();
   const route = useRoute();
   const navigation = useNavigation<NavigationProps>();
-  const { car } = route.params as Params;
+  const { car, dates } = route.params as Params;
+  console.log(dates);
   return (
     <Container>
       <Header>

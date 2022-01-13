@@ -20,14 +20,20 @@ import ArrowSvg from '../../assets/arrow.svg';
 import { CarDTO } from '../../dtos/CarDTO';
 
 import { useTheme } from 'styled-components'
-import { StatusBar } from 'react-native';
+import { Alert, StatusBar } from 'react-native';
 
 import { useNavigation, useRoute } from '@react-navigation/native';
 
 import { format, addDays } from 'date-fns';
 
 type NavigationProps = {
-  navigate: (screen:string, carObject: {car: CarDTO}) => void;
+  navigate: (
+    screen: string, 
+    params: {
+      car: CarDTO
+      dates?: string[],
+    },
+  ) => void;
 }
 
 interface Params {
@@ -85,6 +91,17 @@ export function Scheduling() {
       })
     }
   }
+
+  function handleConfirmRental() {
+    if(!rentalPeriod.start || !rentalPeriod.end)
+      Alert.alert('Selecione o intervalo para alugar.');
+    else
+      navigation.navigate('SchedulingDetails', { 
+        car,
+        dates: Object.keys(markedDates)
+      });
+  }
+
   return (
     <Container>
       <StatusBar 
@@ -130,7 +147,7 @@ export function Scheduling() {
       <Footer>
         <Button 
           title='Confirmar'
-          onPress={() => navigation.navigate('SchedulingDetails', { car })}
+          onPress={handleConfirmRental}
         />
       </Footer>
     </Container>
