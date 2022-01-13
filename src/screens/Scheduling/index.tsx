@@ -20,14 +20,21 @@ import ArrowSvg from '../../assets/arrow.svg';
 import { useTheme } from 'styled-components'
 import { StatusBar } from 'react-native';
 
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import { CarDTO } from '../../dtos/CarDTO';
 
 type NavigationProps = {
-  navigate: (screen:string) => void;
+  navigate: (screen:string, carObject: {car: CarDTO}) => void;
+}
+
+interface Params {
+  car: CarDTO;
 }
 
 export function Scheduling() {
   const navigation = useNavigation<NavigationProps>();
+  const route = useRoute();
+  const { car } = route.params as Params; 
   const theme = useTheme();
   return (
     <Container>
@@ -39,7 +46,7 @@ export function Scheduling() {
       <Header>
         <BackButton 
           color={theme.colors.shape}
-          onPress={() => navigation.navigate('CarDetails')}
+          onPress={() => navigation.navigate('CarDetails', { car })}
         />
         <Title>
           Escolha uma {'\n'}
@@ -67,7 +74,7 @@ export function Scheduling() {
       <Footer>
         <Button 
           title='Confirmar'
-          onPress={() => navigation.navigate('SchedulingDetails')}
+          onPress={() => navigation.navigate('SchedulingDetails', { car })}
         />
       </Footer>
     </Container>

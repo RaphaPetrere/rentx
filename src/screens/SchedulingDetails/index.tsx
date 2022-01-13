@@ -41,19 +41,26 @@ import { Feather } from '@expo/vector-icons';
 import { RFValue } from 'react-native-responsive-fontsize'
 import { useTheme } from 'styled-components'
 
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import { CarDTO } from '../../dtos/CarDTO'
 
 type NavigationProps = {
-  navigate: (screen:string) => void;
+  navigate: (screen:string, carObject?: {car: CarDTO}) => void;
+}
+
+interface Params {
+  car: CarDTO;
 }
 
 export function SchedulingDetails() {
   const theme = useTheme();
+  const route = useRoute();
   const navigation = useNavigation<NavigationProps>();
+  const { car } = route.params as Params;
   return (
     <Container>
       <Header>
-        <BackButton onPress={() => navigation.navigate('Scheduling')}/>
+        <BackButton onPress={() => navigation.navigate('Scheduling', { car })}/>
       </Header>
       <CarImages>
         <ImageSlider 

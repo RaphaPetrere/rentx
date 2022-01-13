@@ -26,7 +26,7 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import { CarDTO } from '../../dtos/CarDTO'
 
 type NavigationProps = {
-  navigate: (screen:string) => void;
+  navigate: (screen:string, carObject?: {car: CarDTO}) => void;
 }
 
 interface Params {
@@ -78,7 +78,7 @@ export function CarDetails() {
       <Footer>
         <Button 
           title='Escolher período do aluguel'
-          onPress={() => navigation.navigate('Scheduling')}
+          onPress={() => navigation.navigate('Scheduling', { car })}
         />
       </Footer>
     </Container>
