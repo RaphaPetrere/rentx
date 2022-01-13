@@ -28,21 +28,16 @@ import {
 import { BackButton } from '../../components/BackButton'
 import { ImageSlider } from '../../components/ImageSlider'
 import { Acessory } from '../../components/Acessory'
-
-import speedSvg from '../../assets/speed.svg';
-import accelerationSvg from '../../assets/acceleration.svg';
-import forceSvg from '../../assets/force.svg';
-import gasolineSvg from '../../assets/gasoline.svg';
-import gearboxSvg from '../../assets/gearbox.svg';
-import peopleSvg from '../../assets/people.svg';
 import { Button } from '../../components/Button'
+
+import { CarDTO } from '../../dtos/CarDTO'
+import { getAccessoryIcon } from '../../utils/getAccessoryIcon'
 
 import { Feather } from '@expo/vector-icons';
 import { RFValue } from 'react-native-responsive-fontsize'
 import { useTheme } from 'styled-components'
-
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { CarDTO } from '../../dtos/CarDTO'
+import { format, addDays } from 'date-fns';
 
 type NavigationProps = {
   navigate: (screen:string, carObject?: {car: CarDTO}) => void;
@@ -66,52 +61,32 @@ export function SchedulingDetails() {
       </Header>
       <CarImages>
         <ImageSlider 
-          imagesUrl={['https://freepngimg.com/thumb/audi/35227-5-audi-rs5-red.png']}
+          imagesUrl={car.photos}
         />
       </CarImages>
 
       <Content>
         <Details>
           <Description>
-            <Brand>
-              Audi
-            </Brand>
-            <Name>
-              RS Coupé
-            </Name>
+            <Brand>{car.brand}</Brand>
+            <Name>{car.name}</Name>
           </Description>
 
           <Rent>
-            <Period>Ao dia</Period>
-            <Price>R$ 120</Price>
+            <Period>{car.rent.period}</Period>
+            <Price>R$ {car.rent.price}</Price>
           </Rent>
         </Details>
 
         <Acessories>
-          <Acessory 
-            name='380Km/h'
-            icon={speedSvg}
-          />
-          <Acessory 
-            name='3.2s'
-            icon={accelerationSvg}
-          />
-          <Acessory 
-            name='800 HP'
-            icon={forceSvg}
-          />
-          <Acessory 
-            name='Gasolina'
-            icon={gasolineSvg}
-          />
-          <Acessory 
-            name='Auto'
-            icon={gearboxSvg}
-          />
-          <Acessory 
-            name='2 pessoas'
-            icon={peopleSvg}
-          />
+          {car.accessories.map(accessory => 
+              <Acessory 
+                key={accessory.type}
+                name={accessory.name}
+                icon={getAccessoryIcon(accessory.type)}
+              />
+            )
+          }
         </Acessories>
 
         <RentalPeriod>
@@ -124,7 +99,7 @@ export function SchedulingDetails() {
           </CalendarIcon>
           <DateInfo>
             <DateTitle>DE</DateTitle>
-            <DateValue>12/01/2022</DateValue>
+            <DateValue>{format(addDays(new Date(dates[0]), 1), 'dd/MM/yyyy')}</DateValue>
           </DateInfo>
           <Feather 
             name='chevron-right'
@@ -132,16 +107,16 @@ export function SchedulingDetails() {
             color={theme.colors.text}
           />
           <DateInfo>
-            <DateTitle>DE</DateTitle>
-            <DateValue>12/01/2022</DateValue>
+            <DateTitle>ATÉ</DateTitle>
+            <DateValue>{format(addDays(new Date(dates[dates.length - 1]), 1), 'dd/MM/yyyy')}</DateValue>
           </DateInfo>
         </RentalPeriod>
 
         <RentalPrice>
           <RentalPriceLabel>TOTAL</RentalPriceLabel>
           <RentalPriceDetails>
-            <RentalPriceQuota>R$ 120 x3 diárias</RentalPriceQuota>
-            <RentalPriceTotal>R$ 360</RentalPriceTotal>
+            <RentalPriceQuota>R$ {car.rent.price} x{dates.length} diárias</RentalPriceQuota>
+            <RentalPriceTotal>R$ {car.rent.price * dates.length}</RentalPriceTotal>
           </RentalPriceDetails>
         </RentalPrice>
       </Content>
