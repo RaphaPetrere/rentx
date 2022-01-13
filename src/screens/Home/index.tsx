@@ -19,7 +19,7 @@ import { useNavigation } from '@react-navigation/native';
 import { Load } from '../../components/Load';
 
 type NavigationProps = {
-  navigate: (screen:string) => void;
+  navigate: (screen:string, carObject: {car: CarDTO}) => void;
 }
 
 export function Home() {
@@ -27,6 +27,10 @@ export function Home() {
   const [loading, setLoading] = useState(true);
 
   const navigation = useNavigation<NavigationProps>();
+
+  function handleCarDetail(car: CarDTO) {
+    navigation.navigate('CarDetails', { car })
+  }
 
   useEffect(() => {
     async function fetchCars() {
@@ -69,7 +73,7 @@ export function Home() {
         <CarList
           data={cars}
           keyExtractor={ item  => item.id}
-          renderItem={({ item }) => <CarCard data={item} onPress={() => navigation.navigate('CarDetails')}/>}
+          renderItem={({ item }) => <CarCard data={item} onPress={() => handleCarDetail(item)}/>}
           showsVerticalScrollIndicator={false}
         />
       }

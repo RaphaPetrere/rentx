@@ -28,14 +28,21 @@ import gearboxSvg from '../../assets/gearbox.svg';
 import peopleSvg from '../../assets/people.svg';
 import { Button } from '../../components/Button'
 
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import { CarDTO } from '../../dtos/CarDTO'
 
 type NavigationProps = {
   navigate: (screen:string) => void;
 }
 
+interface Params {
+  car: CarDTO;
+}
+
 export function CarDetails() {
   const navigation = useNavigation<NavigationProps>();
+  const route = useRoute();
+  const { car } = route.params as Params;
 
   return (
     <Container>
@@ -44,7 +51,7 @@ export function CarDetails() {
       </Header>
       <CarImages>
         <ImageSlider 
-          imagesUrl={['https://freepngimg.com/thumb/audi/35227-5-audi-rs5-red.png']}
+          imagesUrl={car.photos}
         />
       </CarImages>
 
@@ -52,48 +59,33 @@ export function CarDetails() {
         <Details>
           <Description>
             <Brand>
-              Audi
+              {car.brand}
             </Brand>
             <Name>
-              RS Coupé
+              {car.name}
             </Name>
           </Description>
 
           <Rent>
-            <Period>Ao dia</Period>
-            <Price>R$ 120</Price>
+            <Period>{car.rent.period}</Period>
+            <Price>R$ {car.rent.price}</Price>
           </Rent>
         </Details>
 
         <Acessories>
-          <Acessory 
-            name='380Km/h'
-            icon={speedSvg}
-          />
-          <Acessory 
-            name='3.2s'
-            icon={accelerationSvg}
-          />
-          <Acessory 
-            name='800 HP'
-            icon={forceSvg}
-          />
-          <Acessory 
-            name='Gasolina'
-            icon={gasolineSvg}
-          />
-          <Acessory 
-            name='Auto'
-            icon={gearboxSvg}
-          />
-          <Acessory 
-            name='2 pessoas'
-            icon={peopleSvg}
-          />
+          {
+            car.accessories.map(accessory => 
+              <Acessory 
+                key={accessory.type}
+                name={accessory.name}
+                icon={speedSvg}
+              />
+            )
+          }
         </Acessories>
 
         <About>
-          Este é um automóvel desportivo. Surgiu do lendário touro que é seu pai
+          {car.about}
         </About>
 
       </Content>

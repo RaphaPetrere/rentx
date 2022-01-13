@@ -32,4 +32,5 @@ export const TotalCars = styled.Text`
 
 export const CarList = styled(FlatList as new (props: FlatListProps<CarDTO>) => FlatList<CarDTO>)`
   padding: 24px;
+  margin-bottom: 24px;
 `;
