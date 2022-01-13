@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { 
   Container, 
   Header, 
@@ -13,7 +13,7 @@ import {
 
 import { BackButton } from '../../components/BackButton'
 import { Button } from '../../components/Button';
-import { Calendar } from '../../components/Calendar';
+import { Calendar, DayProps, generateInterval, MarkedDateProps } from '../../components/Calendar';
 
 import ArrowSvg from '../../assets/arrow.svg';
 
@@ -36,6 +36,24 @@ export function Scheduling() {
   const route = useRoute();
   const { car } = route.params as Params; 
   const theme = useTheme();
+  const [lastSelectedDate, setLastSelectedDate] = useState<DayProps>({} as DayProps);
+  const [markedDates, setMarkedDates] = useState<MarkedDateProps>({} as MarkedDateProps);
+
+  function handleChangeDate(date: DayProps) {
+    let start = !lastSelectedDate.timestamp ? date : lastSelectedDate;
+    let end = date;
+
+    if(start.timestamp > end.timestamp)
+    {
+      let aux = start;
+      start = end;
+      end = aux;
+    }
+
+    setLastSelectedDate(date);
+    const interval = generateInterval(start, end);
+    setMarkedDates(interval);
+  }
   return (
     <Container>
       <StatusBar 
@@ -68,7 +86,10 @@ export function Scheduling() {
       </Header>
 
       <Content showsVerticalScrollIndicator={false}>
-        <Calendar />
+        <Calendar 
+          markedDates={markedDates}
+          onDayPress={handleChangeDate}
+        />
       </Content>
 
       <Footer>
