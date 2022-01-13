@@ -19,14 +19,8 @@ import {
 import { BackButton } from '../../components/BackButton'
 import { ImageSlider } from '../../components/ImageSlider'
 import { Acessory } from '../../components/Acessory'
-
-import speedSvg from '../../assets/speed.svg';
-import accelerationSvg from '../../assets/acceleration.svg';
-import forceSvg from '../../assets/force.svg';
-import gasolineSvg from '../../assets/gasoline.svg';
-import gearboxSvg from '../../assets/gearbox.svg';
-import peopleSvg from '../../assets/people.svg';
 import { Button } from '../../components/Button'
+import { getAccessoryIcon } from '../../utils/getAccessoryIcon'
 
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { CarDTO } from '../../dtos/CarDTO'
@@ -50,20 +44,14 @@ export function CarDetails() {
         <BackButton onPress={() => navigation.navigate('Home')}/>
       </Header>
       <CarImages>
-        <ImageSlider 
-          imagesUrl={car.photos}
-        />
+        <ImageSlider imagesUrl={car.photos} />
       </CarImages>
 
       <Content>
         <Details>
           <Description>
-            <Brand>
-              {car.brand}
-            </Brand>
-            <Name>
-              {car.name}
-            </Name>
+            <Brand>{car.brand}</Brand>
+            <Name>{car.name}</Name>
           </Description>
 
           <Rent>
@@ -78,15 +66,13 @@ export function CarDetails() {
               <Acessory 
                 key={accessory.type}
                 name={accessory.name}
-                icon={speedSvg}
+                icon={getAccessoryIcon(accessory.type)}
               />
             )
           }
         </Acessories>
 
-        <About>
-          {car.about}
-        </About>
+        <About>{car.about}</About>
 
       </Content>
       <Footer>
