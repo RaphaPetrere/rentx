@@ -15,6 +15,8 @@ import {
 
 import GasolineSvg from '../../assets/gasoline.svg';
 
+import { GestureHandlerRootView, RectButtonProps } from "react-native-gesture-handler";
+
 interface CarData {
   brand: string;
   name: string;
@@ -25,32 +27,34 @@ interface CarData {
   thumbnail: string;
 }
 
-interface Props {
+interface Props extends RectButtonProps {
   data: CarData;
 }
 
-export function CarCard({data}: Props) {
+export function CarCard({data, ...rest}: Props) {
   return (
-    <Container>
-      <Details>
-        <Brand>{data.brand}</Brand>
-        <Name>{data.name}</Name>
+    <GestureHandlerRootView>
+      <Container {...rest}>
+        <Details>
+          <Brand>{data.brand}</Brand>
+          <Name>{data.name}</Name>
 
-        <About>
-          <Rent>
-            <Period>{data.rent.period}</Period>
-            <Price>R$ {data.rent.price}</Price>
-          </Rent>
-    
-          <Type>
-            <GasolineSvg />
-          </Type>
-        </About>
-      </Details>
-      <Image 
-        source={{uri: data.thumbnail}} 
-        resizeMode='contain'
-      />
-    </Container>
+          <About>
+            <Rent>
+              <Period>{data.rent.period}</Period>
+              <Price>R$ {data.rent.price}</Price>
+            </Rent>
+      
+            <Type>
+              <GasolineSvg />
+            </Type>
+          </About>
+        </Details>
+        <Image 
+          source={{uri: data.thumbnail}} 
+          resizeMode='contain'
+        />
+      </Container>
+    </GestureHandlerRootView>
   )
 }

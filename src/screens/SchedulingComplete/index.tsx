@@ -14,8 +14,15 @@ import DoneSvg from '../../assets/done.svg';
 import { Button } from '../../components/Button';
 import { useTheme } from 'styled-components';
 
+import { useNavigation } from '@react-navigation/native';
+
+type NavigationProps = {
+  navigate: (screen:string) => void;
+}
+
 export function SchedulingComplete() {
   const theme = useTheme();
+  const navigation = useNavigation<NavigationProps>();
   return (
     <Container>
       <StatusBar 
@@ -40,7 +47,7 @@ export function SchedulingComplete() {
         <ButtonContainer>
           <Button 
             title='OK'
-            onPress={() => {}}
+            onPress={() => navigation.navigate('Home')}
             color={theme.colors.shape_dark}
           />
         </ButtonContainer>

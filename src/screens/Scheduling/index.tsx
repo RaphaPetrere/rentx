@@ -20,7 +20,14 @@ import ArrowSvg from '../../assets/arrow.svg';
 import { useTheme } from 'styled-components'
 import { StatusBar } from 'react-native';
 
+import { useNavigation } from '@react-navigation/native';
+
+type NavigationProps = {
+  navigate: (screen:string) => void;
+}
+
 export function Scheduling() {
+  const navigation = useNavigation<NavigationProps>();
   const theme = useTheme();
   return (
     <Container>
@@ -32,7 +39,7 @@ export function Scheduling() {
       <Header>
         <BackButton 
           color={theme.colors.shape}
-          onPress={() => {}}
+          onPress={() => navigation.navigate('CarDetails')}
         />
         <Title>
           Escolha uma {'\n'}
@@ -60,7 +67,7 @@ export function Scheduling() {
       <Footer>
         <Button 
           title='Confirmar'
-          onPress={() => {}}
+          onPress={() => navigation.navigate('SchedulingDetails')}
         />
       </Footer>
     </Container>

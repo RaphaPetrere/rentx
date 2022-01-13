@@ -28,11 +28,19 @@ import gearboxSvg from '../../assets/gearbox.svg';
 import peopleSvg from '../../assets/people.svg';
 import { Button } from '../../components/Button'
 
+import { useNavigation } from '@react-navigation/native';
+
+type NavigationProps = {
+  navigate: (screen:string) => void;
+}
+
 export function CarDetails() {
+  const navigation = useNavigation<NavigationProps>();
+
   return (
     <Container>
       <Header>
-        <BackButton onPress={() => {}}/>
+        <BackButton onPress={() => navigation.navigate('Home')}/>
       </Header>
       <CarImages>
         <ImageSlider 
@@ -92,7 +100,7 @@ export function CarDetails() {
       <Footer>
         <Button 
           title='Escolher período do aluguel'
-          onPress={() => {}}
+          onPress={() => navigation.navigate('Scheduling')}
         />
       </Footer>
     </Container>

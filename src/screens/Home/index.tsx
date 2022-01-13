@@ -13,8 +13,17 @@ import Logo from '../../assets/logo.svg';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { CarCard } from '../../components/CarCard';
 
+import { useNavigation } from '@react-navigation/native';
+
+type NavigationProps = {
+  navigate: (screen:string) => void;
+}
+
 export function Home() {
   const [totalCars, setTotalCars] = useState(0);
+
+  const navigation = useNavigation<NavigationProps>();
+
   const carData = {
     brand: 'Audi',
     name: 'RS 5 coupé',
@@ -45,7 +54,8 @@ export function Home() {
 
       <CarList
         data={[1,2,3,4,5,6,7,8]}
-        renderItem={({ item }) => <CarCard data={carData}/>}
+        keyExtractor={item => String(item)}
+        renderItem={({ item }) => <CarCard data={carData} onPress={() => navigation.navigate('CarDetails')}/>}
         showsVerticalScrollIndicator={false}
       />
     </Container>
