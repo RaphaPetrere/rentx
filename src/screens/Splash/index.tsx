@@ -22,19 +22,27 @@ export function Splash() {
     return {
       opacity: interpolate(
         splashAnimation.value, 
-        [0, 50],
-        [1, 0],
+        [0, 49, 50],
+        [1, 1, 0],
       ),
       transform: [
         {
           translateX: interpolate(
             splashAnimation.value, 
             [0,50],
-            [0, -100],
+            [0, 75],
+            Extrapolate.CLAMP,
+          )
+        },
+        {
+          scale: interpolate(
+            splashAnimation.value, 
+            [0,50],
+            [1, .4],
             Extrapolate.CLAMP,
           )
         }
-      ]
+      ],
     }
   });
   
@@ -42,10 +50,10 @@ export function Splash() {
     return {
       opacity: interpolate(
         splashAnimation.value, 
-        [0, 25, 50], 
-        [0, .3, 1],
+        [0, 49, 50], 
+        [0, 0, 1],
       ),
-      transform: [
+      /* transform: [
         {
           translateX: interpolate(
             splashAnimation.value, 
@@ -54,7 +62,7 @@ export function Splash() {
             Extrapolate.CLAMP,
           )
         }
-      ]
+      ] */
     }
   });
 
