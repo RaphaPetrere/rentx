@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {
   Container,
   Header,
@@ -55,8 +55,10 @@ export function SchedulingDetails() {
   const route = useRoute();
   const navigation = useNavigation<NavigationProps>();
   const { car, dates } = route.params as Params;
+  const [lockButton, setLockButton] = useState(false);
 
   async function handleConfirmRental() {
+    setLockButton(true);
     const schedulesByCar = await api.get(`/schedules_bycars/${car.id}`);
 
     const unavailable_dates = [
@@ -76,7 +78,10 @@ export function SchedulingDetails() {
       unavailable_dates
     })
     .then(() => navigation.navigate('SchedulingComplete'))
-    .catch(() => Alert.alert('Não foi possível confirmar o agendamento.'));
+    .catch(() => {
+      setLockButton(false);
+      Alert.alert('Não foi possível confirmar o agendamento.')
+    });
   }
   return (
     <Container>
@@ -149,6 +154,8 @@ export function SchedulingDetails() {
           title='Alugar agora'
           color={theme.colors.success}
           onPress={handleConfirmRental}
+          loading={lockButton}
+          enabled={!lockButton}
         />
       </Footer>
     </Container>
