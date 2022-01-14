@@ -8,6 +8,11 @@ import {
   Appointments,
   AppointmentsTitle,
   AppointmentsQuantity,
+  CarWrapper,
+  CarFooter,
+  CarFooterTitle,
+  CarFooterPeriod,
+  CarFooterDate,
 } from './styles'
 import { StatusBar, FlatList } from 'react-native'
 import { useTheme } from 'styled-components'
@@ -17,6 +22,7 @@ import { CarDTO } from '../../dtos/CarDTO'
 import api from '../../services/api'
 import { CarCard } from '../../components/CarCard'
 import { Load } from '../../components/Load'
+import { AntDesign } from '@expo/vector-icons';
 
 type NavigationProps = {
   navigate: (screen: string) => void;
@@ -26,6 +32,8 @@ interface CarProps {
   car: CarDTO;
   user_id: string;
   id: string;
+  startDate: string;
+  endDate: string;
 }
 
 export function MyCars() {
@@ -88,7 +96,22 @@ export function MyCars() {
               keyExtractor={item => item.id}
               showsVerticalScrollIndicator={false}
               renderItem={({ item }) => 
-                <CarCard data={item.car} />
+                <CarWrapper>
+                  <CarCard data={item.car} />
+                  <CarFooter>
+                    <CarFooterTitle>Período</CarFooterTitle>
+                    <CarFooterPeriod>
+                      <CarFooterDate>{item.startDate}</CarFooterDate>
+                      <AntDesign 
+                        name='arrowright'
+                        size={20}
+                        color={theme.colors.title}
+                        style={{marginHorizontal: 10}}
+                      />
+                      <CarFooterDate>{item.endDate}</CarFooterDate>
+                    </CarFooterPeriod>
+                  </CarFooter>
+                </CarWrapper>
               }
             />
           </>
