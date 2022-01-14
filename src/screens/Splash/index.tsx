@@ -22,10 +22,19 @@ export function Splash() {
     return {
       opacity: interpolate(
         splashAnimation.value, 
-        [0, 25, 50], 
-        [1, .3, 0],
-        Extrapolate.CLAMP
-      )
+        [0, 50],
+        [1, 0],
+      ),
+      transform: [
+        {
+          translateX: interpolate(
+            splashAnimation.value, 
+            [0,50],
+            [0, -100],
+            Extrapolate.CLAMP,
+          )
+        }
+      ]
     }
   });
   
@@ -35,13 +44,27 @@ export function Splash() {
         splashAnimation.value, 
         [0, 25, 50], 
         [0, .3, 1],
-        Extrapolate.CLAMP
-      )
+      ),
+      transform: [
+        {
+          translateX: interpolate(
+            splashAnimation.value, 
+            [0,50],
+            [-100, 0],
+            Extrapolate.CLAMP,
+          )
+        }
+      ]
     }
   });
 
   useEffect(() => {
-    splashAnimation.value = withTiming(50, { duration: 2000 });
+    splashAnimation.value = withTiming(
+      50, 
+      { 
+        duration: 2000 
+      }
+    );
   }, [])
   return (
     <Container>
@@ -50,14 +73,14 @@ export function Splash() {
         backgroundColor={'transparent'}
         translucent
       />
-      <Animated.View style={brandStyle}>
+      <Animated.View style={[brandStyle, {position: 'absolute'}]}>
         <BrandSvg 
           width={80}
           height={50}
         />
       </Animated.View>
 
-      <Animated.View style={logoStyle}>
+      <Animated.View style={[logoStyle, {position: 'absolute'}]}>
         <LogoSvg 
           width={180}
           height={20}
