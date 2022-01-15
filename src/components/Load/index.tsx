@@ -1,12 +1,24 @@
 import React from 'react'
-import { ActivityIndicator } from 'react-native'
-import { useTheme } from 'styled-components'
+import { View } from 'react-native'
+import LottieView from 'lottie-react-native';
+import LoadCar from '../../assets/load_car.json';
 
 export function Load() {
-  const theme = useTheme();
-  return <ActivityIndicator 
-    color={theme.colors.main} 
-    size={"large"} 
-    style={{flex: 1}}
-  />
+  return (
+    <View
+      style={{
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center'
+      }}
+    >
+      <LottieView 
+        source={LoadCar}
+        style={{height: 200}}
+        resizeMode='contain'
+        autoPlay
+        loop
+      />
+    </View>
+  )
 }
