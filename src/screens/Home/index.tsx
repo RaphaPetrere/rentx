@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { StatusBar } from 'react-native';
+import React, { useCallback, useEffect, useState } from 'react';
+import { StatusBar, BackHandler } from 'react-native';
 import {
   Container,
   Header,
@@ -18,7 +18,7 @@ import api from '../../services/api';
 import { CarDTO } from '../../dtos/CarDTO';
 
 import { RFValue } from 'react-native-responsive-fontsize';
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 
 import { Ionicons } from '@expo/vector-icons';
 import { GestureHandlerRootView, PanGestureHandler } from "react-native-gesture-handler";
@@ -87,6 +87,14 @@ export function Home() {
 
     fetchCars();
   }, []);
+
+  useFocusEffect(useCallback(() => {
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      () => true
+    );
+    return () => backHandler.remove();
+  },[],));
   return (
     <Container>
       <StatusBar 
