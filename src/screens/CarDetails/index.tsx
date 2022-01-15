@@ -6,23 +6,13 @@ import {
   AnimatedCarImages,
   CarImages,
   Content,
-  Details,
-  Description,
-  Brand,
-  Name,
-  Rent,
-  Period,
-  Price,
-  About,
-  Acessories,
   Footer,
 } from './styles'
 
 import { BackButton } from '../../components/BackButton'
 import { ImageSlider } from '../../components/ImageSlider'
-import { Acessory } from '../../components/Acessory'
 import { Button } from '../../components/Button'
-import { getAccessoryIcon } from '../../utils/getAccessoryIcon'
+import { CarInfo } from '../../components/CarInfo'
 import { CarDTO } from '../../dtos/CarDTO'
 
 import { StatusBar } from 'react-native'
@@ -96,32 +86,10 @@ export function CarDetails() {
         onScroll={scrollHandler}
         scrollEventThrottle={16}
       >
-        <Details>
-          <Description>
-            <Brand>{car.brand}</Brand>
-            <Name>{car.name}</Name>
-          </Description>
-
-          <Rent>
-            <Period>{car.rent.period}</Period>
-            <Price>R$ {car.rent.price}</Price>
-          </Rent>
-        </Details>
-
-        <Acessories>
-          {
-            car.accessories.map(accessory => 
-              <Acessory 
-                key={accessory.type}
-                name={accessory.name}
-                icon={getAccessoryIcon(accessory.type)}
-              />
-            )
-          }
-        </Acessories>
-
-        <About>{car.about}</About>
-
+        <CarInfo 
+          car={car}
+          showAbout={true}
+        />
       </Content>
       <Footer>
         <Button 

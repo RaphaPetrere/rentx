@@ -4,14 +4,6 @@ import {
   Header,
   CarImages,
   Content,
-  Details,
-  Description,
-  Brand,
-  Name,
-  Rent,
-  Period,
-  Price,
-  Acessories,
   Footer,
   RentalPeriod,
   CalendarIcon,
@@ -27,14 +19,13 @@ import {
 
 import { BackButton } from '../../components/BackButton'
 import { ImageSlider } from '../../components/ImageSlider'
-import { Acessory } from '../../components/Acessory'
+import { CarInfo } from '../../components/CarInfo'
 import { Button } from '../../components/Button'
 
 import { CarDTO } from '../../dtos/CarDTO'
-import { getAccessoryIcon } from '../../utils/getAccessoryIcon'
 import api from '../../services/api'
 
-import { Alert } from 'react-native'
+import { Alert, StatusBar } from 'react-native'
 import { Feather } from '@expo/vector-icons';
 import { RFValue } from 'react-native-responsive-fontsize'
 import { useTheme } from 'styled-components'
@@ -85,6 +76,11 @@ export function SchedulingDetails() {
   }
   return (
     <Container>
+      <StatusBar 
+        barStyle={'dark-content'}
+        backgroundColor={'transparent'}
+        translucent
+      />
       <Header>
         <BackButton onPress={() => navigation.navigate('Scheduling', { car })}/>
       </Header>
@@ -95,28 +91,7 @@ export function SchedulingDetails() {
       </CarImages>
 
       <Content>
-        <Details>
-          <Description>
-            <Brand>{car.brand}</Brand>
-            <Name>{car.name}</Name>
-          </Description>
-
-          <Rent>
-            <Period>{car.rent.period}</Period>
-            <Price>R$ {car.rent.price}</Price>
-          </Rent>
-        </Details>
-
-        <Acessories>
-          {car.accessories.map(accessory => 
-              <Acessory 
-                key={accessory.type}
-                name={accessory.name}
-                icon={getAccessoryIcon(accessory.type)}
-              />
-            )
-          }
-        </Acessories>
+        <CarInfo car={car} />
 
         <RentalPeriod>
           <CalendarIcon>
