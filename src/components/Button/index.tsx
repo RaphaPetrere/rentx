@@ -10,6 +10,7 @@ interface Props {
   color?: string;
   enabled?: boolean;
   loading?: boolean;
+  light?: boolean;
   onPress: () => void;
 }
 
@@ -17,7 +18,8 @@ export function Button({
   title, 
   color, 
   enabled = true, 
-  loading = false, 
+  loading = false,
+  light = false,
   ...rest
 }: Props) {
   const theme = useTheme();
@@ -34,7 +36,7 @@ export function Button({
           ?
           <ActivityIndicator color={theme.colors.shape} />
           :
-          <Title>{title}</Title>
+          <Title light={light}>{title}</Title>
         }
       </Container>
     </GestureHandlerRootView>
