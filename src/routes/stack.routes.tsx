@@ -5,9 +5,12 @@ import { Home } from '../screens/Home';
 import { CarDetails } from '../screens/CarDetails';
 import { Scheduling } from '../screens/Scheduling';
 import { SchedulingDetails } from '../screens/SchedulingDetails';
-import { SchedulingComplete } from '../screens/SchedulingComplete';
+import { Complete } from '../screens/Complete';
 import { MyCars } from '../screens/MyCars';
 import { Splash } from '../screens/Splash';
+import { SignIn } from '../screens/SignIn';
+import { FirstStep } from '../screens/SignUp/FirstStep';
+import { SecondStep } from '../screens/SignUp/SecondStep';
 
 const { Navigator, Screen } = createStackNavigator();
 
@@ -17,11 +20,19 @@ export function StackRoutes() {
       screenOptions={{
         headerShown: false
       }} 
-      initialRouteName='Splash'
+      initialRouteName='Home'
     >
       <Screen 
-        name='Splash'
-        component={Splash}
+        name='SignIn'
+        component={SignIn}
+      />
+      <Screen 
+        name='FirstStep'
+        component={FirstStep}
+      />
+      <Screen 
+        name='SecondStep'
+        component={SecondStep}
       />
       <Screen 
         name='Home'
@@ -43,8 +54,8 @@ export function StackRoutes() {
         component={SchedulingDetails}
       />
       <Screen 
-        name='SchedulingComplete'
-        component={SchedulingComplete}
+        name='Complete'
+        component={Complete}
       />
       <Screen 
         name='MyCars'

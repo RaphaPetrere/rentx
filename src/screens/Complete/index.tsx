@@ -14,15 +14,23 @@ import DoneSvg from '../../assets/done.svg';
 import { Button } from '../../components/Button';
 import { useTheme } from 'styled-components';
 
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 
 type NavigationProps = {
   navigate: (screen:string) => void;
 }
 
-export function SchedulingComplete() {
+interface Params {
+  title: string;
+  message: string;
+  nextRoute: string;
+}
+
+export function Complete() {
   const theme = useTheme();
   const navigation = useNavigation<NavigationProps>();
+  const route = useRoute();
+  const { title, message, nextRoute } = route.params as Params;
   return (
     <Container>
       <StatusBar 
@@ -34,12 +42,10 @@ export function SchedulingComplete() {
 
       <Content>
         <DoneSvg width={80} height={80}/>
-        <Title>Carro alugado!</Title>
+        <Title>{title}</Title>
 
         <Message>
-          Agora você só precisa ir {'\n'}
-          até a concessionária da RENTX {'\n'}
-          pegar o seu automóvel.
+          {message}
         </Message>
       </Content>
 
@@ -47,7 +53,7 @@ export function SchedulingComplete() {
         <ButtonContainer>
           <Button 
             title='OK'
-            onPress={() => navigation.navigate('Home')}
+            onPress={() => navigation.navigate(nextRoute)}
             color={theme.colors.shape_dark}
           />
         </ButtonContainer>

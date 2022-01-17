@@ -33,7 +33,15 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import { format, addDays } from 'date-fns';
 
 type NavigationProps = {
-  navigate: (screen:string, carObject?: {car: CarDTO}) => void;
+  navigate: (
+    screen:string, 
+    object: {
+      car?: CarDTO,
+      title?: string;
+      message?: string;
+      nextRoute?: string;
+    }
+  ) => void;
 }
 
 interface Params {
@@ -68,7 +76,13 @@ export function SchedulingDetails() {
       id: car.id,
       unavailable_dates
     })
-    .then(() => navigation.navigate('SchedulingComplete'))
+    .then(() => navigation.navigate('Complete', {
+      title: 'Carro alugado!',
+      message: `Agora você só precisa ir
+      até a concessionária da RENTX
+      pegar o seu automóvel.`,
+      nextRoute: 'Home'
+    }))
     .catch(() => {
       setLockButton(false);
       Alert.alert('Não foi possível confirmar o agendamento.')

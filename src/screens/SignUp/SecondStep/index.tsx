@@ -23,7 +23,14 @@ import {
 import { useNavigation, useRoute } from '@react-navigation/native'
 
 type NavigationProps = {
-  navigate: (screen:string) => void;
+  navigate: (
+    screen:string,
+    confirmObject?: {
+      title: string;
+      message: string;
+      nextRoute: string;
+    }
+  ) => void;
 }
 
 interface Params {
@@ -51,7 +58,11 @@ export function SecondStep() {
         password
       }
       // await AsyncStorage.setItem('@rentx:user', user);
-      navigation.navigate('SecondStep')
+      navigation.navigate('Complete', {
+        title: 'Conta criada!',
+        message: `Agora é só fazer login\ne aproveitar`,
+        nextRoute: 'SignIn'
+      })
     } catch (error) {
       
     }
