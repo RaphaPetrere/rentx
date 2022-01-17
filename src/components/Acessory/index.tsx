@@ -13,6 +13,7 @@ export function Acessory({name, icon: Icon}: Props) {
       <Icon 
         width={32}
         height={32}
+        fill={'#47474D'}
       />
       <Name>{name}</Name>
     </Container>
