@@ -21,11 +21,17 @@ import {
   Footer,
   ButtonWithMargin,
 } from './styles'
+import { useNavigation } from '@react-navigation/native';
+
+type NavigationProps = {
+  navigate: (screen:string) => void;
+}
 
 export function SignIn() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const theme = useTheme();
+  const navigation = useNavigation<NavigationProps>();
 
   async function handleSignIn() {
     try {
@@ -62,7 +68,7 @@ export function SignIn() {
         <Container>
           <StatusBar 
             barStyle={'dark-content'}
-            backgroundColor={'transparent'}
+            backgroundColor={theme.colors.background_primary}
             translucent
           />
           <Header>
@@ -108,7 +114,7 @@ export function SignIn() {
             <ButtonWithMargin>
               <Button 
                 title='Criar conta gratuita'
-                onPress={() => {}}
+                onPress={() => navigation.navigate('FirstStep')}
                 color={theme.colors.background_secondary}
                 enabled={true}
                 loading={false}
