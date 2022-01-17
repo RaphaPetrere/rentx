@@ -29,8 +29,8 @@ export function CarInfo({car, showAbout = false}: Props) {
         </Description>
 
         <Rent>
-          <Period>{car.rent.period}</Period>
-          <Price>R$ {car.rent.price}</Price>
+          <Period>{car.period}</Period>
+          <Price>R$ {car.price}</Price>
         </Rent>
       </Details>
 
@@ -38,9 +38,9 @@ export function CarInfo({car, showAbout = false}: Props) {
         {
           car.accessories.map(accessory => 
             <Acessory 
-              key={accessory.type}
+              key={accessory.id}
               name={accessory.name}
-              icon={getAccessoryIcon(accessory.type)}
+              icon={getAccessoryIcon(accessory.type == 'exchange' ? 'gearbox' : accessory.type)}
             />
           )
         }
