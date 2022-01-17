@@ -1,10 +1,10 @@
-import { useNavigation } from '@react-navigation/native'
 import React, { useState } from 'react'
 import {
   StatusBar,
   KeyboardAvoidingView,
   Keyboard,
   TouchableWithoutFeedback,
+  Alert,
 } from 'react-native'
 import { useTheme } from 'styled-components'
 import { BackButton } from '../../../components/BackButton'
@@ -20,16 +20,43 @@ import {
   Form,
   FormTitle,
 } from './styles'
+import { useNavigation, useRoute } from '@react-navigation/native'
 
 type NavigationProps = {
   navigate: (screen:string) => void;
 }
 
+interface Params {
+  nome: string;
+  email: string;
+  cnh: string;
+}
+
 export function SecondStep() {
   const navigation = useNavigation<NavigationProps>();
+  const route = useRoute();
+  const { cnh, email, nome } = route.params as Params;
   const [password, setPassword] = useState('');
   const [repeatPassword, setRepeatPassword] = useState('');
   const theme = useTheme();
+  async function handleRegister() {
+    try {
+      if(password != repeatPassword)
+        return Alert.alert('Opa', 'As credenciais não condizem');
+
+      const user = {
+        nome,
+        email,
+        cnh,
+        password
+      }
+      // await AsyncStorage.setItem('@rentx:user', user);
+      navigation.navigate('SecondStep')
+    } catch (error) {
+      
+    }
+  }
+
   return (
     <KeyboardAvoidingView
       behavior='position'
@@ -43,7 +70,7 @@ export function SecondStep() {
             translucent
           />
           <Header>
-            <BackButton onPress={() => navigation.navigate('SignIn')} />
+            <BackButton onPress={() => navigation.navigate('FirstStep')} />
             <Steps>
               <Bullet/>
               <Bullet active/>
@@ -85,7 +112,7 @@ export function SecondStep() {
           <Button 
             title='Cadastrar'
             color={theme.colors.success}
-            onPress={() => navigation.navigate('SecondStep')}
+            onPress={handleRegister}
             enabled={!!password && !!repeatPassword}
             loading={false}
           />

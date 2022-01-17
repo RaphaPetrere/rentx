@@ -1,10 +1,10 @@
-import { useNavigation } from '@react-navigation/native'
 import React, { useState } from 'react'
 import {
   StatusBar,
   KeyboardAvoidingView,
   Keyboard,
   TouchableWithoutFeedback,
+  Alert,
 } from 'react-native'
 import { useTheme } from 'styled-components'
 import { BackButton } from '../../../components/BackButton'
@@ -20,9 +20,18 @@ import {
   Form,
   FormTitle,
 } from './styles'
+import { useNavigation } from '@react-navigation/native'
+import * as Yup from 'yup';
 
 type NavigationProps = {
-  navigate: (screen:string) => void;
+  navigate: (
+    screen:string,
+    user?: {
+      nome: string;
+      email: string;
+      cnh: string;
+    }
+  ) => void;
 }
 
 export function FirstStep() {
@@ -31,6 +40,33 @@ export function FirstStep() {
   const [nome, setNome] = useState('');
   const [cnh, setCnh] = useState('');
   const theme = useTheme();
+
+  async function handleNextStep() {
+    try {
+      const schema = Yup.object().shape({
+        nome: Yup.string()
+          .required('Nome é obrigatório'),
+        email: Yup.string()
+          .email('Digite um E-mail válido')
+          .required('E-mail é obrigatório'),
+        cnh: Yup.string()
+          .required('CNH é obrigatória'),
+      })
+      const data = {
+        nome,
+        email,
+        cnh
+      }
+
+      await schema.validate(data);
+      navigation.navigate('SecondStep', data);
+    } catch (error) {
+      if(error instanceof Yup.ValidationError)
+        return Alert.alert('Opa', error.message);
+      else
+        return Alert.alert('Opa', 'Digite credenciais válidas');
+    }
+  }
   return (
     <KeyboardAvoidingView
       behavior='position'
@@ -44,7 +80,7 @@ export function FirstStep() {
             translucent
           />
           <Header>
-            <BackButton onPress={() => navigation.navigate('FirstStep')} />
+            <BackButton onPress={() => navigation.navigate('SignIn')} />
             <Steps>
               <Bullet active/>
               <Bullet/>
@@ -94,7 +130,7 @@ export function FirstStep() {
           </Form>
           <Button 
             title='Próximo'
-            onPress={() => navigation.navigate('SecondStep')}
+            onPress={handleNextStep}
             enabled={!!nome && !!email && !!cnh}
             loading={false}
           />
