@@ -73,7 +73,7 @@ export function CarDetails() {
       />
       <AnimatedHeaderAndSlider style={headerStyleAnimation}>
         <Header>
-          <BackButton onPress={() => navigation.navigate('Home')} />
+          <BackButton onPress={() => navigation.navigate('HomeStack')} />
         </Header>
         <CarImages>
           <AnimatedCarImages style={sliderCarsStyleAnimation}>

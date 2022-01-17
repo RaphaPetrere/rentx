@@ -81,7 +81,7 @@ export function SchedulingDetails() {
       message: `Agora você só precisa ir
       até a concessionária da RENTX
       pegar o seu automóvel.`,
-      nextRoute: 'Home'
+      nextRoute: 'HomeStack'
     }))
     .catch(() => {
       setLockButton(false);
@@ -133,8 +133,8 @@ export function SchedulingDetails() {
         <RentalPrice>
           <RentalPriceLabel>TOTAL</RentalPriceLabel>
           <RentalPriceDetails>
-            <RentalPriceQuota>R$ {car.rent.price} x{dates.length} diárias</RentalPriceQuota>
-            <RentalPriceTotal>R$ {car.rent.price * dates.length}</RentalPriceTotal>
+            <RentalPriceQuota>R$ {car.price} x{dates.length} diárias</RentalPriceQuota>
+            <RentalPriceTotal>R$ {car.price * dates.length}</RentalPriceTotal>
           </RentalPriceDetails>
         </RentalPrice>
       </Content>

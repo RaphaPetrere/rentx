@@ -15,6 +15,7 @@ import {
 import BrandSvg from '../../assets/brand.svg';
 import LogoSvg from '../../assets/logo.svg';
 import { useNavigation } from '@react-navigation/native';
+import { useAuth } from '../../hooks/auth';
 
 type NavigationProps = {
   navigate: ( screen: string ) => void;
@@ -23,6 +24,7 @@ type NavigationProps = {
 export function Splash() {
   const splashAnimation = useSharedValue(0);
   const navigation = useNavigation<NavigationProps>();
+  const { user } = useAuth();
 
   const brandStyle = useAnimatedStyle(() => {
     return {
@@ -73,7 +75,7 @@ export function Splash() {
   });
 
   function startApp() {
-    navigation.navigate('Home');
+    navigation.navigate(user ? 'Home' : 'SignIn');
   }
 
   useEffect(() => {
