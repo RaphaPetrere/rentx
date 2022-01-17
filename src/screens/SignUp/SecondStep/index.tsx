@@ -11,6 +11,7 @@ import { BackButton } from '../../../components/BackButton'
 import { Bullet } from '../../../components/Bullet'
 import { Button } from '../../../components/Button'
 import { Input } from '../../../components/Input'
+import api from '../../../services/api'
 import {
   Container,
   Header,
@@ -58,10 +59,21 @@ export function SecondStep() {
         password
       }
       // await AsyncStorage.setItem('@rentx:user', user);
-      navigation.navigate('Complete', {
-        title: 'Conta criada!',
-        message: `Agora é só fazer login\ne aproveitar`,
-        nextRoute: 'SignIn'
+      await api.post('/users', {
+        name: nome,
+        email,
+        driver_license: cnh,
+        password
+      })
+      .then(() => {
+        navigation.navigate('Complete', {
+          title: 'Conta criada!',
+          message: `Agora é só fazer login\ne aproveitar.`,
+          nextRoute: 'SignIn'
+        })
+      })
+      .catch(() => {
+        return Alert.alert('Opa', 'Não foi possível cadastrar');
       })
     } catch (error) {
       
