@@ -12,13 +12,16 @@ import { GestureHandlerRootView, BorderlessButton } from "react-native-gesture-h
 interface InputProps extends TextInputProps {
   iconName: React.ComponentProps<typeof Feather>['name'];
   password?: boolean;
+  hasInputValue: boolean;
 }
 
 export function Input({
   iconName, 
   password = false, 
+  hasInputValue,
   ...rest 
 }: InputProps) {
+  const [isFocused, setIsFocused] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const theme = useTheme();
 
@@ -26,18 +29,29 @@ export function Input({
     setShowPassword(prevState => !prevState);
   }
 
+  function handleInputFocus() {
+    setIsFocused(true);
+  }
+
+  function handleInputBlur() {
+    setIsFocused(false);
+  }
+
   return (
     <Container>
-      <IconWrapper>
+      <IconWrapper showBorder={hasInputValue || isFocused}>
         <Feather 
           name={iconName}
           size={24}
-          color={theme.colors.text_detail}
+          color={hasInputValue || isFocused ? theme.colors.main : theme.colors.text_detail}
         />
       </IconWrapper>
       <InputText
         secureTextEntry={password && !showPassword}
         {...rest} 
+        onFocus={handleInputFocus}
+        onBlur={handleInputBlur}
+        showBorder={hasInputValue || isFocused}
       />
 
       {
@@ -48,6 +62,7 @@ export function Input({
           >
             <IconWrapper
               style={{marginRight: 0}}
+              showBorder={hasInputValue || isFocused}
             >
               <Feather 
                 name={showPassword ? 'eye-off' : 'eye'}
