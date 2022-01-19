@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StatusBar } from 'react-native';
+import { Alert, StatusBar } from 'react-native';
 import {
   Container,
   Header,
@@ -17,7 +17,7 @@ import { CarDTO } from '../../dtos/CarDTO';
 
 import { RFValue } from 'react-native-responsive-fontsize';
 import { useNavigation } from '@react-navigation/native';
-
+import NetInfo, { useNetInfo } from '@react-native-community/netinfo';
 
 type NavigationProps = {
   navigate: (screen:string, carObject?: {car: CarDTO}) => void;
@@ -27,6 +27,7 @@ export function Home() {
   const [cars, setCars] = useState<CarDTO[]>([]);
   const [loading, setLoading] = useState(true);
 
+  const netInfo = useNetInfo();
   const navigation = useNavigation<NavigationProps>();
 
   function handleCarDetail(car: CarDTO) {
@@ -55,6 +56,10 @@ export function Home() {
       isMounted = false;
     };
   }, []);
+
+  useEffect(() => {
+    Alert.alert(netInfo.isConnected ? 'Você está on-line' : 'Você está off-line');
+  }, [netInfo.isConnected])
   return (
     <Container>
       <StatusBar 
