@@ -27,7 +27,7 @@ export const HeaderTop = styled.View`
   justify-content: space-between;
   align-items: center;
 
-  margin-top: ${getStatusBarHeight() + 32}px;
+  margin-top: ${getStatusBarHeight() + 18}px;
 `;
 
 export const HeaderTitle = styled.Text`
