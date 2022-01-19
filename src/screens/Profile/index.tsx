@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StatusBar } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Feather } from '@expo/vector-icons';
@@ -15,6 +15,11 @@ import {
   PhotoContainer,
   Photo,
   PhotoButton,
+  Content,
+  Options,
+  Option,
+  OptionTitle,
+  Footer,
 } from './styles';
 
 type NavigationProps = {
@@ -22,6 +27,7 @@ type NavigationProps = {
 }
 
 export function Profile() {
+  const [option, setOption] = useState<'data' | 'password'>('data');
   const theme = useTheme();
   const navigation = useNavigation<NavigationProps>();
   function handleSignOut() {
@@ -30,7 +36,7 @@ export function Profile() {
   return (
     <Container>
       <StatusBar 
-        barStyle={'dark-content'}
+        barStyle={'light-content'}
         backgroundColor={'transparent'}
         translucent
       />
@@ -64,10 +70,30 @@ export function Profile() {
           </PhotoButton>
         </PhotoContainer>
       </Header>
-      <Button 
-        title='Salvar alterações'
-        enabled={false}
-      />
+
+      <Content>
+        <Options>
+          <Option
+            active={option === 'data'}
+            onPress={() => setOption('data')}
+          >
+            <OptionTitle active={option === 'data'}>Dados</OptionTitle>
+          </Option>
+          <Option
+            active={option === 'password'}
+            onPress={() => setOption('password')}
+          >
+            <OptionTitle active={option === 'password'}>Trocar senha</OptionTitle>
+          </Option>
+        </Options>
+      </Content>
+
+      <Footer>
+        <Button 
+          title='Salvar alterações'
+          enabled={false}
+        />
+      </Footer>
     </Container>
   )
 }
