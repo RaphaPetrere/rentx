@@ -75,7 +75,7 @@ export function Splash() {
   });
 
   function startApp() {
-    navigation.navigate(user ? 'Home' : 'SignIn');
+    navigation.navigate(user.id ? 'Home' : 'SignIn');
   }
 
   useEffect(() => {

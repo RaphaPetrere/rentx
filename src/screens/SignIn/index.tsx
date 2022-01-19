@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import {
   StatusBar,
   KeyboardAvoidingView,
@@ -23,7 +23,6 @@ import {
   ButtonWithMargin,
 } from './styles'
 import { useNavigation } from '@react-navigation/native';
-import { database } from '../../database';
 
 type NavigationProps = {
   navigate: (screen:string) => void;
@@ -59,16 +58,6 @@ export function SignIn() {
       );
     }
   }
-
-  useEffect(() => {
-    async function loadData() {
-      const userCollection = database.get('users');
-      const user = await userCollection.query().fetch();
-      console.log(user);
-    }
-
-    loadData();
-  }, [])
 
   return (
     <KeyboardAvoidingView

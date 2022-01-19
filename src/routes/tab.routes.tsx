@@ -2,7 +2,6 @@ import React from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import { StackRoutes } from './stack.routes';
-import { CarDetails } from '../screens/CarDetails';
 import { MyCars } from '../screens/MyCars';
 import HomeSvg from '../assets/home.svg';
 import CarSvg from '../assets/car.svg';
