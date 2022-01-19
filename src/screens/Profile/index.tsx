@@ -37,16 +37,13 @@ type NavigationProps = {
 }
 
 export function Profile() {
-  const { user } = useAuth();
+  const { user, signOut } = useAuth();
   const theme = useTheme();
   const navigation = useNavigation<NavigationProps>();
   const [option, setOption] = useState<'data' | 'password'>('data');
   const [avatar, setAvatar] = useState(user.avatar);
   const [name, setName] = useState(user.name);
   const [driverLicense, setDriverLicense] = useState(user.driver_license);
-  function handleSignOut() {
-
-  }
 
   async function handleAvatarSelect() {
     console.log("entrei");
@@ -90,7 +87,7 @@ export function Profile() {
                 Editar Perfil
               </HeaderTitle>
               <GestureHandlerRootView>
-                <LogoutButton onPress={handleSignOut}>
+                <LogoutButton onPress={signOut}>
                   <Feather
                     name='power'
                     size={24}
