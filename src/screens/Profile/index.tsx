@@ -8,6 +8,7 @@ import {
 import { useNavigation } from '@react-navigation/native';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import { Feather } from '@expo/vector-icons';
+import * as ImagePicker from 'expo-image-picker';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { useTheme } from 'styled-components';
 import { BackButton } from '../../components/BackButton';
@@ -36,12 +37,34 @@ type NavigationProps = {
 }
 
 export function Profile() {
-  const [option, setOption] = useState<'data' | 'password'>('data');
-  const theme = useTheme();
   const { user } = useAuth();
+  const theme = useTheme();
   const navigation = useNavigation<NavigationProps>();
+  const [option, setOption] = useState<'data' | 'password'>('data');
+  const [avatar, setAvatar] = useState(user.avatar);
+  const [name, setName] = useState(user.name);
+  const [driverLicense, setDriverLicense] = useState(user.driver_license);
   function handleSignOut() {
 
+  }
+
+  async function handleAvatarSelect() {
+    console.log("entrei");
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [4,4],
+      quality: 1,
+    })
+
+    console.log('result', result);
+
+    if(result.cancelled)
+      return;
+
+    if(result.uri) {
+      setAvatar(result.uri);
+    }
   }
   return (
     <KeyboardAvoidingView
@@ -77,14 +100,23 @@ export function Profile() {
               </GestureHandlerRootView>
             </HeaderTop>
             <PhotoContainer>
-              <Photo source={{uri: 'https://avatars.githubusercontent.com/u/56046074?v=4'}}/>
-              <PhotoButton onPress={() => {}}>
-                <Feather 
-                  name='camera'
-                  size={24}
-                  color={theme.colors.shape}
-                />
-              </PhotoButton>
+              { !!avatar && <Photo source={{uri: avatar}}/> }
+              <GestureHandlerRootView
+                style={{
+                  position: 'absolute',
+                  // bottom: 0,
+                  right: 0,
+                  backgroundColor: 'blue'
+                }}
+              >
+                <PhotoButton onPress={handleAvatarSelect}>
+                  <Feather 
+                    name='camera'
+                    size={24}
+                    color={theme.colors.shape}
+                  />
+                </PhotoButton>
+              </GestureHandlerRootView>
             </PhotoContainer>
           </Header>
 
@@ -118,6 +150,7 @@ export function Profile() {
                   autoCorrect={false}
                   hasInputValue={false}
                   defaultValue={user.name}
+                  onChangeText={setName}
                 />
                 <Input 
                   iconName='mail'
@@ -131,6 +164,7 @@ export function Profile() {
                   keyboardType='numeric'
                   hasInputValue={false}
                   defaultValue={user.driver_license}
+                  onChangeText={setDriverLicense}
                 />
               </Section>
               :

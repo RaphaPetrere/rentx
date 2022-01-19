@@ -59,9 +59,6 @@ export const PhotoButton = styled(RectButton)`
 
   justify-content: center;
   align-items: center;
-  position: absolute;
-  bottom: 0;
-  right: 0;
 `;
 
 export const Content = styled.View`
