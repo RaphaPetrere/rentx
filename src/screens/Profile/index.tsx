@@ -92,6 +92,24 @@ export function Profile() {
       Alert.alert('Ops', 'Não foi possível atualizar o perfil');
     }
   }
+
+  async function handleSignOut() {
+    Alert.alert(
+      'Atenção', 
+      'Se você sair, irá precisar de internet para conectar-se novamente.',
+      [
+        {
+          text: 'Cancelar',
+          onPress: () => {},
+        },
+        {
+          text: 'Sair',
+          onPress: () => signOut(),
+        }
+      ]
+    )
+  }
+
   return (
     <KeyboardAvoidingView
       behavior='position'
@@ -116,7 +134,7 @@ export function Profile() {
                 Editar Perfil
               </HeaderTitle>
               <GestureHandlerRootView>
-                <LogoutButton onPress={signOut}>
+                <LogoutButton onPress={handleSignOut}>
                   <Feather
                     name='power'
                     size={24}
