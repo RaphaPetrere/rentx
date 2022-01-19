@@ -4,6 +4,7 @@ import {
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
   Keyboard,
+  Alert,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
@@ -11,6 +12,7 @@ import { Feather } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { useTheme } from 'styled-components';
+import * as Yup from 'yup';
 import { BackButton } from '../../components/BackButton';
 import { Button } from '../../components/Button';
 import {
@@ -27,7 +29,6 @@ import {
   Option,
   OptionTitle,
   Section,
-  Footer,
 } from './styles';
 import { Input } from '../../components/Input';
 import { useAuth } from '../../hooks/auth';
@@ -37,7 +38,7 @@ type NavigationProps = {
 }
 
 export function Profile() {
-  const { user, signOut } = useAuth();
+  const { user, signOut, updateUser } = useAuth();
   const theme = useTheme();
   const navigation = useNavigation<NavigationProps>();
   const [option, setOption] = useState<'data' | 'password'>('data');
@@ -61,6 +62,34 @@ export function Profile() {
 
     if(result.uri) {
       setAvatar(result.uri);
+    }
+  }
+
+  async function handleProfileUpdate() {
+    try {
+      const schema = Yup.object().shape({
+        driverLicense: Yup.string().required('CNH é obrigatória'),
+        name: Yup.string().required('Nome é obrigatório')
+      });
+      const data = { name, driverLicense };
+      await schema.validate(data);
+
+      await updateUser({
+        id: user.id,
+        user_id: user.user_id,
+        email: user.email,
+        name,
+        driver_license: driverLicense,
+        avatar,
+        token: user.token
+      });
+
+      Alert.alert('Alteração realizada com sucesso');
+    } catch (error){
+      if(error instanceof Yup.ValidationError)
+        return Alert.alert('Opa', error.message);
+      console.log(error);
+      Alert.alert('Ops', 'Não foi possível atualizar o perfil');
     }
   }
   return (
@@ -189,14 +218,12 @@ export function Profile() {
                 />
               </Section>
             }
-          </Content>
-
-          <Footer>
             <Button 
               title='Salvar alterações'
-              enabled={false}
+              enabled={true}
+              onPress={handleProfileUpdate}
             />
-          </Footer>
+          </Content>
         </Container>
       </TouchableWithoutFeedback>
     </KeyboardAvoidingView>
