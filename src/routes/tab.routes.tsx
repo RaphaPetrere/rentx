@@ -3,6 +3,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import { StackRoutes } from './stack.routes';
 import { MyCars } from '../screens/MyCars';
+import { Profile } from '../screens/Profile';
 import HomeSvg from '../assets/home.svg';
 import CarSvg from '../assets/car.svg';
 import PeopleSvg from '../assets/people.svg';
@@ -56,7 +57,7 @@ export function TabRoutes() {
       />
       <Screen 
         name='Profile'
-        component={StackRoutes}
+        component={Profile}
         options={{
           tabBarIcon: (({ color }) => 
             <PeopleSvg 
