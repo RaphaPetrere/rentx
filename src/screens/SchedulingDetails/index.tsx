@@ -58,23 +58,13 @@ export function SchedulingDetails() {
 
   async function handleConfirmRental() {
     setLockButton(true);
-    const schedulesByCar = await api.get(`/schedules_bycars/${car.id}`);
 
-    const unavailable_dates = [
-      ...schedulesByCar.data.unavailable_dates,
-      ...dates,
-    ]
-
-    await api.post(`/schedules_byuser`, {
+    await api.post(`rentals`, {
       user_id: 1,
-      car,
-      startDate: format(addDays(new Date(dates[0]), 1), 'dd/MM/yyyy'),
-      endDate: format(addDays(new Date(dates[dates.length - 1]), 1), 'dd/MM/yyyy')
-    });
-
-    api.put(`/schedules_bycars/${car.id}`, {
-      id: car.id,
-      unavailable_dates
+      car_id: car.id,
+      start_date: new Date(dates[0]),
+      end_date: new Date(dates[dates.length - 1]),
+      total: car.price * dates.length
     })
     .then(() => navigation.navigate('Complete', {
       title: 'Carro alugado!',
