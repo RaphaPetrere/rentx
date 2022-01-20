@@ -22,7 +22,6 @@ import { ImageSlider } from '../../components/ImageSlider'
 import { CarInfo } from '../../components/CarInfo'
 import { Button } from '../../components/Button'
 
-import { CarDTO } from '../../dtos/CarDTO'
 import api from '../../services/api'
 
 import { Alert, StatusBar } from 'react-native'
@@ -31,12 +30,13 @@ import { RFValue } from 'react-native-responsive-fontsize'
 import { useTheme } from 'styled-components'
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { format, addDays } from 'date-fns';
+import { Car as CarModel } from '../../database/model/Car'
 
 type NavigationProps = {
   navigate: (
     screen:string, 
     object: {
-      car?: CarDTO,
+      car?: CarModel,
       title?: string;
       message?: string;
       nextRoute?: string;
@@ -45,7 +45,7 @@ type NavigationProps = {
 }
 
 interface Params {
-  car: CarDTO;
+  car: CarModel;
   dates: string[],
 }
 
@@ -99,9 +99,7 @@ export function SchedulingDetails() {
         <BackButton onPress={() => navigation.navigate('Scheduling', { car })}/>
       </Header>
       <CarImages>
-        <ImageSlider 
-          imagesUrl={car.photos}
-        />
+        <ImageSlider car={car}/>
       </CarImages>
 
       <Content>
