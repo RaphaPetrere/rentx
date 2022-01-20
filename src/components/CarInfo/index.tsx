@@ -1,5 +1,7 @@
-import React from 'react'
-import { CarDTO } from '../../dtos/CarDTO'
+import { useNetInfo } from '@react-native-community/netinfo'
+import React, { useEffect, useState } from 'react'
+import { Car as CarModel } from '../../database/model/Car'
+import api from '../../services/api'
 import { getAccessoryIcon } from '../../utils/getAccessoryIcon'
 import { Acessory } from '../Acessory'
 import {
@@ -15,11 +17,27 @@ import {
 } from './styles'
 
 interface Props {
-  car: CarDTO,
+  car: CarModel,
   showAbout?: boolean,
 }
 
+interface Accessories {
+  id: string;
+  type: string;
+  name: string;
+}[]
+
 export function CarInfo({car, showAbout = false}: Props) {
+  const [accessories, setAccessories] = useState<Accessories[]>([]);
+  const netinfo = useNetInfo();
+  useEffect(() => {
+    async function loadCarAccessories() {
+      const response = await api.get(`cars/${car.id}`);
+      setAccessories(response.data.accessories);
+    }
+
+    netinfo.isConnected && loadCarAccessories();
+  }, [netinfo.isConnected]);
   return (
     <>
       <Details>
@@ -30,21 +48,27 @@ export function CarInfo({car, showAbout = false}: Props) {
 
         <Rent>
           <Period>{car.period}</Period>
-          <Price>R$ {car.price}</Price>
+          <Price>R$ {netinfo.isConnected ? car.price : '...'}</Price>
         </Rent>
       </Details>
 
-      <Accessories>
-        {
-          car.accessories.map(accessory => 
-            <Acessory 
-              key={accessory.id}
-              name={accessory.name}
-              icon={getAccessoryIcon(accessory.type == 'exchange' ? 'gearbox' : accessory.type)}
-            />
-          )
-        }
-      </Accessories>
+      {
+        accessories.length > 0 ?
+        <Accessories>
+          {
+            accessories.map(accessory => 
+              <Acessory 
+                key={accessory.id}
+                name={accessory.name}
+                icon={getAccessoryIcon(accessory.type == 'exchange' ? 'gearbox' : accessory.type)}
+              />
+            )
+          }
+        </Accessories>
+        :
+        <>
+        </>
+      }
       {
         showAbout &&
           <About>{car.about}</About>

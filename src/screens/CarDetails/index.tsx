@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import {
   Container,
   AnimatedHeaderAndSlider,
@@ -14,6 +14,8 @@ import { ImageSlider } from '../../components/ImageSlider'
 import { Button } from '../../components/Button'
 import { CarInfo } from '../../components/CarInfo'
 import { CarDTO } from '../../dtos/CarDTO'
+import { Car as CarModel } from '../../database/model/Car'
+import api from '../../services/api'
 
 import { StatusBar } from 'react-native'
 import { useNavigation, useRoute } from '@react-navigation/native';
@@ -24,17 +26,21 @@ import {
   interpolate,
   Extrapolate,
 } from 'react-native-reanimated';
+import { useNetInfo } from '@react-native-community/netinfo'
+import { OfflineInfo } from '../../components/OfflineInfo'
 
 type NavigationProps = {
-  navigate: (screen:string, carObject?: {car: CarDTO}) => void;
+  navigate: (screen:string, carObject?: {car: CarModel}) => void;
 }
 
 interface Params {
-  car: CarDTO;
+  car: CarModel;
 }
 
 export function CarDetails() {
+  const [carUpdated, setCarUpdated] = useState<CarDTO>({} as CarDTO);
   const navigation = useNavigation<NavigationProps>();
+  const netinfo = useNetInfo();
   const route = useRoute();
   const { car } = route.params as Params;
   const scrollY = useSharedValue(0);
@@ -64,6 +70,15 @@ export function CarDetails() {
     }
   })
 
+  useEffect(() => {
+    async function fetchCarUpdated() {
+      const response = await api.get(`cars/${car.id}`);
+      setCarUpdated(response.data);
+    }
+
+    netinfo.isConnected && fetchCarUpdated();
+  }, [netinfo.isConnected]);
+
   return (
     <Container>
       <StatusBar 
@@ -77,7 +92,10 @@ export function CarDetails() {
         </Header>
         <CarImages>
           <AnimatedCarImages style={sliderCarsStyleAnimation}>
-            <ImageSlider imagesUrl={car.photos} />
+            <ImageSlider imagesUrl={
+                !!carUpdated.photos ? carUpdated.photos : [{ id : car.id, photo: car.thumbnail }]
+              } 
+            />
           </AnimatedCarImages>
         </CarImages>
       </AnimatedHeaderAndSlider>
@@ -95,7 +113,15 @@ export function CarDetails() {
         <Button 
           title='Escolher período do aluguel'
           onPress={() => navigation.navigate('Scheduling', { car })}
+          enabled={!!netinfo.isConnected}
         />
+
+        {
+          !netinfo.isConnected &&
+          <OfflineInfo
+            text='Conecte-se a Internet para ver mais detalhes e agendar seu carro.'
+          />
+        }
       </Footer>
     </Container>
   )

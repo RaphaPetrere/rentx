@@ -16,12 +16,14 @@ import {
 import { GestureHandlerRootView, RectButtonProps } from "react-native-gesture-handler";
 import { getAccessoryIcon } from '../../utils/getAccessoryIcon';
 import { Car as CarModel} from '../../database/model/Car';
+import { useNetInfo } from '@react-native-community/netinfo';
 
 interface Props extends RectButtonProps {
   data: CarModel;
 }
 
 export function CarCard({data, ...rest}: Props) {
+  const netInfo = useNetInfo();
   const MotorIcon = getAccessoryIcon(data.fuel_type);
   return (
     <GestureHandlerRootView>
@@ -33,7 +35,7 @@ export function CarCard({data, ...rest}: Props) {
           <About>
             <Rent>
               <Period>{data.period}</Period>
-              <Price>R$ {data.price}</Price>
+              <Price>R$ {netInfo.isConnected ? data.price : '...'}</Price>
             </Rent>
       
             <Type>

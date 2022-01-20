@@ -1,4 +1,5 @@
 import React from 'react';
+import { LogBox } from 'react-native';
 import {
   useFonts,
   Inter_400Regular,
@@ -26,6 +27,11 @@ export default function App() {
     Archivo_500Medium,
     Archivo_600SemiBold
   });
+
+
+  LogBox.ignoreLogs([
+    'Non-serializable values were found in the navigation state'
+  ]);
 
   if(!fontsLoaded){
     return <AppLoading />

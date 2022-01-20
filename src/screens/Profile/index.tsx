@@ -32,6 +32,7 @@ import {
 } from './styles';
 import { Input } from '../../components/Input';
 import { useAuth } from '../../hooks/auth';
+import { useNetInfo } from '@react-native-community/netinfo';
 
 type NavigationProps = {
   navigate: (screen: string) => void;
@@ -41,6 +42,7 @@ export function Profile() {
   const { user, signOut, updateUser } = useAuth();
   const theme = useTheme();
   const navigation = useNavigation<NavigationProps>();
+  const netinfo = useNetInfo();
   const [option, setOption] = useState<'data' | 'password'>('data');
   const [avatar, setAvatar] = useState(user.avatar);
   const [name, setName] = useState(user.name);
@@ -126,10 +128,6 @@ export function Profile() {
           />
           <Header>
             <HeaderTop>
-              <BackButton 
-                color={theme.colors.shape}
-                onPress={() => {}}
-              />
               <HeaderTitle>
                 Editar Perfil
               </HeaderTitle>
@@ -238,7 +236,7 @@ export function Profile() {
             }
             <Button 
               title='Salvar alterações'
-              enabled={true}
+              enabled={(netinfo.isConnected === true && option === 'password') || option === 'data'}
               onPress={handleProfileUpdate}
             />
           </Content>
